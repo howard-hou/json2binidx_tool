@@ -1,6 +1,5 @@
 ########################################################################################################
 # The RWKV Language Model - https://github.com/BlinkDL/RWKV-LM
-# Source: https://github.com/BlinkDL/ChatRWKV/blob/main/tokenizer/rwkv_tokenizer.py
 ########################################################################################################
 
 import os, sys, time, random
@@ -14,7 +13,7 @@ Benefits:
 
 * Good support of most languages, from European to CJK to Arabic and Hindi and more.
 
-* Clean vocab. Good for code too. Vocab size = 65525 (use 0 for <|endoftext|>).
+* Clean vocab. Good for code too. Vocab size = 65536 (use 0 for <|endoftext|>).
 
 * Good at numbers: the numerical tokens are '0'~'9', '10'~'99', ' 0'~' 9', ' 10'~' 99'.
 
@@ -38,11 +37,10 @@ python3 -c "import rwkv_tokenizer"
 ########################################################################################################
 
 class RWKV_TOKENIZER():
-    table = None  # : list[list[list[bytes]]] = None
-    good = None  # : list[set[int]]
-    wlen = None  # : list[int]
+    table: list[list[list[bytes]]]
+    good: list[set[int]]
+    wlen: list[int]
     def __init__(self, file_name):
-        self.vocab_size = 65525
         self.idx2token = {}
         sorted = [] # must be already sorted
         lines = open(file_name, "r", encoding="utf-8").readlines()
@@ -73,9 +71,9 @@ class RWKV_TOKENIZER():
                 self.wlen[s0] = max(self.wlen[s0], len(s))
                 self.good[s0].add(s1)
 
-    def encodeBytes(self, src: bytes):
+    def encodeBytes(self, src: bytes) -> list[int]:
         src_len: int = len(src)
-        tokens = []
+        tokens: list[int] = []
         i: int = 0
         while i < src_len:
             s: bytes = src[i : i + 1]
@@ -102,15 +100,6 @@ class RWKV_TOKENIZER():
 
     def decode(self, tokens):
         return self.decodeBytes(tokens).decode('utf-8')
-
-    def token_to_id(self, token):
-        return self.token2idx[token]
-
-    def get_vocab_size(self):
-        return self.vocab_size
-
-    def get_vocab(self):
-        return self.idx2token
 
     def printTokens(self, tokens):
         for i in tokens:
@@ -173,7 +162,6 @@ class TRIE:
 
 class TRIE_TOKENIZER():
     def __init__(self, file_name):
-        self.vocab_size = 65525
         self.idx2token = {}
         sorted = [] # must be already sorted
         with open(file_name, "r", encoding="utf-8") as f:
@@ -194,6 +182,7 @@ class TRIE_TOKENIZER():
         self.root = TRIE()
         for t, i in self.token2idx.items():
             _ = self.root.add(t, val=(t, i))
+        self.vocab_size = len(self.idx2token)
 
     def encodeBytes(self, src:bytes):
         idx:int = 0
@@ -217,9 +206,6 @@ class TRIE_TOKENIZER():
 
     def get_vocab_size(self):
         return self.vocab_size
-
-    def get_vocab(self):
-        return self.idx2token
 
     def printTokens(self, tokens):
         for i in tokens:
