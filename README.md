@@ -1,10 +1,13 @@
 # jsonl to binidx tool
 
 This repository is greatly simplified from https://github.com/EleutherAI/gpt-neox, to ONLY convert .jsonl into .bin and .idx , can serve for dataset preparation of RWKV model (see https://github.com/BlinkDL/RWKV-LM), 
+## To speedup  the tokenization, please use mypyc.
 
-## The current RWKV models use GPT Neox tokenizer 20B_tokenizer.json
 ```
-python tools/preprocess_data.py --input ./sample.jsonl --output-prefix ./data/sample --vocab ./20B_tokenizer.json --dataset-impl mmap --tokenizer-type HFTokenizer --append-eod
+# first install mypy
+pip install mypy
+# cd to tools
+cd tools && mypyc rwkv_tokenizer.py
 ```
 
 ## The multilingual rwkv-4-world models use a new tokenizer rwkv_vocab_v20230424.txt.
