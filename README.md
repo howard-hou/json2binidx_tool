@@ -10,7 +10,7 @@ pip install mypy
 cd tools && mypyc rwkv_tokenizer.py
 ```
 
-## The multilingual rwkv-4-world models use a new tokenizer rwkv_vocab_v20230424.txt.
+## The multilingual rwkv-6-world models use a new tokenizer rwkv_vocab_v20230424.txt.
 ```
 python tools/preprocess_data.py --input ./sample.jsonl --output-prefix ./data/sample --vocab ./rwkv_vocab_v20230424.txt --dataset-impl mmap --tokenizer-type RWKVTokenizer --append-eod
 ```
