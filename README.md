@@ -1,6 +1,6 @@
 # jsonl to binidx tool
 
-This repository can serve for dataset preparation of [RWKV model](see https://github.com/BlinkDL/RWKV-LM), 
+This repository can serve for dataset preparation of [RWKV model](https://github.com/BlinkDL/RWKV-LM), 
 
 ## To speedup  the tokenization, please install the fast RWKV Tokenizer written in [Rust](https://github.com/cahya-wirawan/rwkv-tokenizer).
 ```
